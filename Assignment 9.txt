@@ -1,0 +1,6 @@
+Sending email in Saraha app is done using Nodemailer.
+During signup, the backend generates an OTP, stores it securely, and sends it to the user’s email to verify ownership.
+
+
+Asymmetric encryption uses a public key for encryption and a private key for decryption.
+It is commonly used in secure communications such as HTTPS, email encryption, and digital signatures.
