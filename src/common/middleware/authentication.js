@@ -1,5 +1,7 @@
 import { VerifyToken } from "../utils/security/token.service.js"
-import { findOne } from "../../DB/db.service.js";
+import * as db_service from "../../DB/db.service.js";
+import userModel from "../../DB/models/user.model.js";
+
 
 export const authentication = async (req,res,next) =>{
     const {authorization} = req.headers
@@ -10,7 +12,7 @@ export const authentication = async (req,res,next) =>{
     }
 
     const [Prefix,token] = authorization.split(" ") //[bearer,token]
-    if(Prefix !== "brearer"){
+    if(Prefix.toLowerCase() !== "bearer"){
         throw new Error("Invalid Token Prefix");
     }
 
