@@ -9,20 +9,41 @@ import jwt from "jsonwebtoken";
 import {v4 as uuidv4} from "uuid"
 import {OAuth2Client} from 'google-auth-library';
 import { SALT_ROUNDS } from "../../config/config.service.js";
+import joi from "joi";
+import cloudinary from "../common/utils/security/cloudinary.js";
 
- 
+
+
 
 const asyncHandler = () =>{
   
 }
 
 
+
 export const signUp = async (req, res, next) => {
   const { userName, email, password, cPassword, gender, phone } = req.body
+
+  const {secure_url,public_id} = await cloudinary.uploader
+    .upload(req.file.path,{
+      folder:"saraha_app",
+      // public_id:"david"
+      // use_filename: true
+      // unique_filename: false
+      resource_type:"auto"
+    })
+
 
   if (password !== cPassword) {
     throw new Error("invalid password", { cause: 400 });
   }
+
+  // let arr_paths = []
+  //   console.log(req.files, "after");
+
+  //   for (const file of req.files.attachments) {
+  //       arr_paths.push(file.path)
+  //   }
 
   if (await db_service.findOne({ model: userModel, filter: { email } })) {
     throw new Error("email already exist", { cause: 409 });
@@ -30,7 +51,15 @@ export const signUp = async (req, res, next) => {
 
   const user = await db_service.create({
     model: userModel,
-    data: { userName, email, password:await Hash({plainText: password, salt_rounds: SALT_ROUNDS}), gender, phone:encrypt(phone) }
+    data: { userName,
+      email,
+      password:await Hash({plainText: password, salt_rounds: SALT_ROUNDS}),
+      gender,
+      phone:encrypt(phone),
+  // profilePicture: req.files.attachment[0].path,
+  profilePicture: {secure_url,public_id},
+      coverPicture: arr_paths
+    }
   })
 
   successResponse({ res, status: 201, message: "success signup", data: user })
@@ -120,20 +149,25 @@ const access_token = GenerateToken(
 
 
 
+// export const getProfile = async (req, res, next) => {
+//   // const { id } = req.params
+
+//   const { authorization } = req.headers
+
+//   const decoded = jwt.verify(authorization, "MVX")
+
+//   const user = await db_service.findById({
+//     model: userModel,
+//     id: decoded.id,
+//     select: "-password"
+//   })
+//   if (!user) {
+//     throw new Error("user not exist", { cause: 400 });
+//   }
+//   successResponse({ res, message: "success signin", data: user })
+// }
+
+
 export const getProfile = async (req, res, next) => {
-  // const { id } = req.params
-
-  const { authorization } = req.headers
-
-  const decoded = jwt.verify(authorization, "MVX")
-
-  const user = await db_service.findById({
-    model: userModel,
-    id: decoded.id,
-    select: "-password"
-  })
-  if (!user) {
-    throw new Error("user not exist", { cause: 400 });
-  }
-  successResponse({ res, message: "success signin", data: user })
+  successResponse({res,data: req.user})
 }

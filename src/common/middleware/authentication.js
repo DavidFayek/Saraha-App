@@ -17,7 +17,7 @@ export const authentication = async (req,res,next) =>{
     }
 
     const decoded = VerifyToken({token,secret_key:"MVX"})
-
+    console.log(decoded)
     if (!decoded || !decoded?.id){
         throw new Error("Invalid Token");
         
@@ -27,7 +27,7 @@ export const authentication = async (req,res,next) =>{
   if (!user){
     throw new Error("user Not Exist", {cause:400});
   }
-    
+    console.log(user)
     req.user = user
     next()
 }

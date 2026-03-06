@@ -17,6 +17,9 @@ app.get("/",(req,res,next) =>{
 })
 checkConnectionDB()
 
+app.use("/uploads",express.static("uploads"))
+
+app.use("/uploads", express.static("uploads"));
 app.use("/users",userRouter)
 app.use("{/*demo}",(req,res,next) =>{
     throw new Error(`URL ${req.originalUrl} Not Found`,{cause:404});
