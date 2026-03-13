@@ -4,20 +4,23 @@ import checkConnectionDB from './DB/ConnectionDB.js';
 import userRouter from './modules/users.controller.js';
 import cors from "cors"
 import { PORT } from '../config/config.service.js';
+import { connectRedis } from "./DB/redis/redis.connect.js";
+
 const app = express();
 const port = PORT
 
 
 
-const bootstrap = () =>{
+const bootstrap = async () =>{
  app.use(cors(),express.json())
 
 app.get("/",(req,res,next) =>{
     res.status(200).json({message:`Welcome on Saraha App`})
 })
 checkConnectionDB()
+connectRedis();
 
-app.use("/uploads",express.static("uploads"))
+
 
 app.use("/uploads", express.static("uploads"));
 app.use("/users",userRouter)

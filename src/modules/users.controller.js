@@ -22,6 +22,18 @@ userRouter.post("/signup",multer_host(multer_enum.image)
   
 userRouter.post("/signup/gmail",US.signUpWithGmail)
 userRouter.post("/signin",validation(UV.signInSchema),US.signIn)
+userRouter.get("/refresh-token", US.refresh_token);
 userRouter.get("/profile",authentication,authorization([RoleEnum.admin]),US.getProfile)
+userRouter.get("/share-profile/:id", validation(UV.shareProfileSchema), US.shareProfile);
+userRouter.patch("/update-profile", authentication,validation(UV.updateProfileSchema), US.updateProfile);
+userRouter.patch("/update-password",authentication ,validation(UV.updatePasswordSchema), US.updatePassword);
+userRouter.post("/logout",authentication ,US.logout);
+userRouter.patch("/upload-cover",authentication,multer_host(multer_enum.image).array("coverPicture",2),US.uploadCoverPicture)
+userRouter.patch("/upload-profile-picture",authentication,multer_host(multer_enum.image).single("profilePicture"),US.uploadProfilePicture)
+userRouter.delete("/remove-profile-picture",authentication,US.removeProfilePicture)
+
+
+
+
 
 export default userRouter

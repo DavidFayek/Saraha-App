@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import {RoleEnum, GenderEnum, ProviderEnum } from "../../common/enum/user.enum.js";
-import { required, string } from "joi";
+import joi from "joi";
 
 const userSchema= new mongoose.Schema({
     firstName:{
@@ -42,13 +42,25 @@ const userSchema= new mongoose.Schema({
         default:GenderEnum.male
     },
     profilePicture: {
-        secure_url:{type:string, required:true},
-        public_id:{type:string, required:true}
+        secure_url:{type:String, required:true},
+        public_id:{type:String, required:true}
     },
     coverPicture:[{
-        secure_url:{type:string, required:true},
-        public_id:{type:string, required:true}
+        secure_url:{type:String, required:true},
+        public_id:{type:String, required:true}
     }],
+    gallery:[{
+    secure_url:{type:String},
+    public_id:{type:String}
+}],
+
+profileVisits:{
+    type:Number,
+    default:0
+},
+    changeCredential:{
+        type:Date,
+    },
     confirmed: Boolean,
     provider:{
         type:String,

@@ -1,3 +1,4 @@
+
 // src/DB/db.service.js
 
 export const create = async ({ model, data = {} }) => {
@@ -50,3 +51,8 @@ export const deleteOne = async ({ model, filter = {} } = {}) => {
   const doc = model.deleteOne(filter)
   return await doc.exec()
 }
+
+export const deleteMany = async ({ model, filter = {} } = {}) => {
+  return await model.deleteMany(filter)
+}
+
