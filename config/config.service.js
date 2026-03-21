@@ -17,6 +17,8 @@ export const ACCESS_SECRET_KEY = process.env.ACCESS_SECRET_KEY;
 export const REFRESH_SECRET_KEY = process.env.REFRESH_SECRET_KEY;
 export const PREFIX = process.env.PREFIX;
 export const REDIS_URL = process.env.REDIS_URL;
+export const EMAIL = process.env.EMAIL;
+export const PASSWORD = process.env.EMAIL_PASS;
 
 // export const PORT = process.env.PORT
 // export const PORT = process.env.PORT
